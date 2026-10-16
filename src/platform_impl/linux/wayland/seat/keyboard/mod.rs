@@ -88,8 +88,17 @@ impl Dispatch<WlKeyboard, KeyboardData, WinitState> for WinitState {
                     state.events_sink.push_window_event(WindowEvent::Focused(true), window_id);
                 }
 
+                // The keyboard now supplies the modifiers of this window. If the window already
+                // received the pending modifiers as the window under the pointer, it does not
+                // receive them again.
+                let has_pointer_modifiers =
+                    seat_state.pointer_modifiers_window.get() == Some(window_id);
+                if has_pointer_modifiers {
+                    seat_state.pointer_modifiers_window.set(None);
+                }
+
                 // HACK: this is just for GNOME not fixing their ordering issue of modifiers.
-                if std::mem::take(&mut seat_state.modifiers_pending) {
+                if std::mem::take(&mut seat_state.modifiers_pending) && !has_pointer_modifiers {
                     state.events_sink.push_window_event(
                         WindowEvent::ModifiersChanged(seat_state.modifiers.into()),
                         window_id,
@@ -105,6 +114,12 @@ impl Dispatch<WlKeyboard, KeyboardData, WinitState> for WinitState {
                 if let Some(token) = keyboard_state.repeat_token.take() {
                     keyboard_state.loop_handle.remove(token);
                 }
+
+                // Without keyboard focus, the compositor sends further modifiers only if it ties
+                // them to the pointer focus, so the current state is stale, including for the
+                // window under the pointer.
+                seat_state.modifiers_known = false;
+                seat_state.clear_pointer_modifiers(state.windows.get_mut(), &mut state.events_sink);
 
                 // NOTE: The check whether the window exists is essential as we might get a
                 // nil surface, regardless of what protocol says.
@@ -226,7 +241,12 @@ impl Dispatch<WlKeyboard, KeyboardData, WinitState> for WinitState {
                 }
             },
             WlKeyboardEvent::Modifiers {
-                mods_depressed, mods_latched, mods_locked, group, ..
+                serial,
+                mods_depressed,
+                mods_latched,
+                mods_locked,
+                group,
+                ..
             } => {
                 let xkb_context = &mut keyboard_state.xkb_context;
                 let xkb_state = match xkb_context.state_mut() {
@@ -236,19 +256,31 @@ impl Dispatch<WlKeyboard, KeyboardData, WinitState> for WinitState {
 
                 xkb_state.update_modifiers(mods_depressed, mods_latched, mods_locked, 0, 0, group);
                 seat_state.modifiers = xkb_state.modifiers().into();
+                seat_state.modifiers_known = true;
+                seat_state.modifiers_serial = serial;
 
-                // HACK: part of the workaround from `WlKeyboardEvent::Enter`.
-                let window_id = match *data.window_id.lock().unwrap() {
-                    Some(window_id) => window_id,
-                    None => {
-                        seat_state.modifiers_pending = true;
-                        return;
-                    },
-                };
+                let keyboard_focus = data.window_id();
 
-                state.events_sink.push_window_event(
-                    WindowEvent::ModifiersChanged(seat_state.modifiers.into()),
-                    window_id,
+                // HACK: part of the workaround from `WlKeyboardEvent::Enter`. Without keyboard
+                // focus, the modifiers may be meant for a surface about to receive it (GNOME), so
+                // the next `Enter` reports them as well.
+                seat_state.modifiers_pending = keyboard_focus.is_none();
+
+                if let Some(window_id) = keyboard_focus {
+                    state.events_sink.push_window_event(
+                        WindowEvent::ModifiersChanged(seat_state.modifiers.into()),
+                        window_id,
+                    );
+                }
+
+                // A different window under the pointer receives the modifiers for its pointer input
+                // as well; without keyboard focus, the compositor sends them for that purpose
+                // (wayland >= 1.23). If the `wl_pointer.enter` awaits its `frame`, the pointer
+                // handler reports them instead.
+                seat_state.send_pointer_modifiers(
+                    state.windows.get_mut(),
+                    &mut state.events_sink,
+                    None,
                 );
             },
             WlKeyboardEvent::RepeatInfo { rate, delay } => {
@@ -355,6 +387,11 @@ pub struct KeyboardData {
 impl KeyboardData {
     pub fn new(seat: WlSeat) -> Self {
         Self { window_id: Default::default(), seat }
+    }
+
+    /// The window with keyboard focus.
+    pub(crate) fn window_id(&self) -> Option<WindowId> {
+        *self.window_id.lock().unwrap()
     }
 }
 

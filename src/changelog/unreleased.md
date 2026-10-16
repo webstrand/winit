@@ -39,3 +39,10 @@ The migration guide could reference other migration examples in the current
 changelog entry.
 
 ## Unreleased
+
+### Changed
+
+- `WindowEvent::ModifiersChanged` is also delivered to an unfocused window receiving pointer input,
+  so Ctrl+click and Ctrl+scroll into it carry their modifiers. On X11 from the modifier state of
+  pointer events, on Wayland while another window of the application has keyboard focus or when the
+  compositor sends `wl_keyboard.modifiers` without keyboard focus.

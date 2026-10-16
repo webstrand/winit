@@ -124,7 +124,7 @@ impl PointerHandler for WinitState {
                     );
                 },
                 // Regular events on the main surface.
-                PointerEventKind::Enter { .. } => {
+                PointerEventKind::Enter { serial } => {
                     self.events_sink
                         .push_window_event(WindowEvent::CursorEntered { device_id }, window_id);
 
@@ -137,6 +137,16 @@ impl PointerHandler for WinitState {
                         WindowEvent::CursorMoved { device_id, position },
                         window_id,
                     );
+
+                    // The modifiers for pointer input are reported here as well, in case
+                    // `wl_keyboard.modifiers` preceded this `wl_pointer.frame` (see
+                    // `WlKeyboardEvent::Modifiers`).
+                    drop(window);
+                    seat_state.send_pointer_modifiers(
+                        self.windows.get_mut(),
+                        &mut self.events_sink,
+                        Some(serial),
+                    );
                 },
                 PointerEventKind::Leave { .. } => {
                     window.pointer_left(Arc::downgrade(themed_pointer));
@@ -146,6 +156,12 @@ impl PointerHandler for WinitState {
 
                     self.events_sink
                         .push_window_event(WindowEvent::CursorLeft { device_id }, window_id);
+
+                    // The window receives neither keyboard nor pointer input anymore, so its
+                    // modifiers are stale.
+                    drop(window);
+                    seat_state
+                        .clear_pointer_modifiers(self.windows.get_mut(), &mut self.events_sink);
                 },
                 PointerEventKind::Motion { .. } => {
                     self.events_sink.push_window_event(
