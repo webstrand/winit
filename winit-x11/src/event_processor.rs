@@ -1,4 +1,4 @@
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::mem::MaybeUninit;
 use std::os::raw::{c_char, c_int, c_long, c_ulong};
@@ -18,8 +18,8 @@ use winit_core::event_loop::DndAction;
 use winit_core::keyboard::ModifiersState;
 use winit_core::window::WindowId;
 use x11_dl::xinput2::{
-    self, XIDeviceEvent, XIEnterEvent, XIFocusInEvent, XIFocusOutEvent, XIHierarchyEvent,
-    XILeaveEvent, XIModifierState, XIRawEvent,
+    self, XIButtonState, XIDeviceEvent, XIEnterEvent, XIFocusInEvent, XIFocusOutEvent,
+    XIHierarchyEvent, XILeaveEvent, XIModifierState, XIRawEvent,
 };
 use x11_dl::xlib::{
     self, Display as XDisplay, Window as XWindow, XAnyEvent, XClientMessageEvent, XConfigureEvent,
@@ -70,8 +70,8 @@ pub struct EventProcessor {
     pub first_touch: Option<u32>,
     // Currently focused window belonging to this process
     pub active_window: Option<xproto::Window>,
-    /// Latest modifiers we've sent for the user to trigger change in event.
-    pub modifiers: Cell<ModifiersState>,
+    /// Window of this process containing the pointer.
+    pub pointer_window: Option<xproto::Window>,
     // Track modifiers based on keycodes. NOTE: that serials generally don't work for tracking
     // since they are not unique and could be duplicated in case of sequence of key events is
     // delivered at near the same time.
@@ -219,21 +219,57 @@ impl EventProcessor {
                         };
 
                         let xev: &XIDeviceEvent = unsafe { xev.as_event() };
-                        self.update_mods_from_xinput2_event(&xev.mods, &xev.group, false, app);
+                        self.update_mods_from_xinput2_event(
+                            xev.event as _,
+                            &xev.mods,
+                            &xev.group,
+                            app,
+                        );
                         self.xinput2_button_input(xev, state, app);
+
+                        // Releasing the button outside the window ends the implicit grab which
+                        // delivered pointer input to it.
+                        let window = xev.event as xproto::Window;
+                        if state == ElementState::Released && self.pointer_window != Some(window) {
+                            self.clear_unfocused_modifiers(window, app);
+                        }
                     },
                     xinput2::XI_Motion => {
                         let xev: &XIDeviceEvent = unsafe { xev.as_event() };
-                        self.update_mods_from_xinput2_event(&xev.mods, &xev.group, false, app);
+                        self.update_mods_from_xinput2_event(
+                            xev.event as _,
+                            &xev.mods,
+                            &xev.group,
+                            app,
+                        );
                         self.xinput2_mouse_motion(xev, app);
                     },
                     xinput2::XI_Enter => {
                         let xev: &XIEnterEvent = unsafe { xev.as_event() };
+                        self.pointer_window = Some(xev.event as _);
+                        self.update_mods_from_xinput2_event(
+                            xev.event as _,
+                            &xev.mods,
+                            &xev.group,
+                            app,
+                        );
                         self.xinput2_mouse_enter(xev, app);
                     },
                     xinput2::XI_Leave => {
                         let xev: &XILeaveEvent = unsafe { xev.as_event() };
-                        self.update_mods_from_xinput2_event(&xev.mods, &xev.group, false, app);
+                        let window = xev.event as xproto::Window;
+                        if self.pointer_window == Some(window) {
+                            self.pointer_window = None;
+                        }
+
+                        // A held button keeps the implicit grab delivering pointer input to the
+                        // window; otherwise an unfocused window receives no further pointer input,
+                        // so its modifiers are stale.
+                        if Some(window) == self.active_window || Self::buttons_held(&xev.buttons) {
+                            self.update_mods_from_xinput2_event(window, &xev.mods, &xev.group, app);
+                        } else {
+                            self.clear_unfocused_modifiers(window, app);
+                        }
                         self.xinput2_mouse_left(xev, app);
                     },
                     xinput2::XI_FocusIn => {
@@ -1025,7 +1061,8 @@ impl EventProcessor {
 
             // Restore the client's modifiers state after replay.
             if replay {
-                self.send_modifiers(window_id, self.modifiers.get(), true, app);
+                let modifiers = self.last_modifiers(window).unwrap_or_default();
+                self.send_modifiers(window_id, modifiers, true, app);
             }
 
             return;
@@ -1653,24 +1690,34 @@ impl EventProcessor {
                         xev.locked_group as u32,
                     );
 
-                    let window_id = match self.active_window.map(mkwid) {
-                        Some(window_id) => window_id,
-                        None => return,
-                    };
-
                     let mods = state.modifiers().into();
-                    self.send_modifiers(window_id, mods, true, app);
+                    if let Some(window) = self.active_window {
+                        self.send_modifiers(mkwid(window), mods, true, app);
+                    }
+
+                    // The unfocused window under the pointer requires the modifiers for its pointer
+                    // input as well, such as Ctrl pressed while the pointer hovers it.
+                    if let Some(window) =
+                        self.pointer_window.filter(|window| Some(*window) != self.active_window)
+                    {
+                        self.send_modifiers(mkwid(window), mods, false, app);
+                    }
                 }
             },
             _ => {},
         }
     }
 
+    /// Updates the modifiers from the state of an XInput2 pointer event and reports them to the
+    /// `window` receiving the event.
+    ///
+    /// The X server attaches the modifier state to every pointer event regardless of keyboard
+    /// focus, so an unfocused window receives the modifiers of a Ctrl+click, for example.
     pub(crate) fn update_mods_from_xinput2_event(
         &mut self,
+        window: xproto::Window,
         mods: &XIModifierState,
         group: &XIModifierState,
-        force: bool,
         app: &mut dyn ApplicationHandler,
     ) {
         if let Some(state) = self.xkb_context.state_mut() {
@@ -1683,15 +1730,8 @@ impl EventProcessor {
                 group.locked as u32,
             );
 
-            // NOTE: we use active window since generally sub windows don't have keyboard input,
-            // and winit assumes that unfocused window doesn't have modifiers.
-            let window_id = match self.active_window.map(mkwid) {
-                Some(window_id) => window_id,
-                None => return,
-            };
-
             let mods = state.modifiers();
-            self.send_modifiers(window_id, mods.into(), force, app);
+            self.send_modifiers(mkwid(window), mods.into(), false, app);
         }
     }
 
@@ -1801,10 +1841,33 @@ impl EventProcessor {
         depressed
     }
 
-    /// Send modifiers for the active window.
+    /// Resets the modifiers of an unfocused window which stopped receiving pointer input.
+    fn clear_unfocused_modifiers(&self, window: xproto::Window, app: &mut dyn ApplicationHandler) {
+        if Some(window) != self.active_window {
+            self.send_modifiers(mkwid(window), ModifiersState::empty(), false, app);
+        }
+    }
+
+    /// Whether the button state of an XInput2 event has any button held.
+    fn buttons_held(buttons: &XIButtonState) -> bool {
+        if buttons.mask.is_null() {
+            return false;
+        }
+
+        let mask = unsafe { slice::from_raw_parts(buttons.mask, buttons.mask_len as usize) };
+        mask.iter().any(|&byte| byte != 0)
+    }
+
+    /// Latest modifiers sent to the given window, or `None` if the window does not exist.
+    fn last_modifiers(&self, window: xproto::Window) -> Option<ModifiersState> {
+        self.with_window(window, |window| window.shared_state_lock().last_modifiers)
+    }
+
+    /// Send modifiers for the given window.
     ///
-    /// The event won't be sent when the `modifiers` match the previously `sent` modifiers value,
-    /// unless `force` is passed. The `force` should be passed when the active window changes.
+    /// The event won't be sent when the `modifiers` match the value previously sent to that
+    /// window, unless `force` is passed. The `force` should be passed when the window focus
+    /// changes. Nothing is sent when the window doesn't exist anymore.
     fn send_modifiers(
         &self,
         window_id: winit_core::window::WindowId,
@@ -1814,9 +1877,17 @@ impl EventProcessor {
     ) {
         // NOTE: Always update the modifiers to account for case when they've changed
         // and forced was `true`.
-        if self.modifiers.replace(modifiers) != modifiers || force {
-            let event = WindowEvent::ModifiersChanged(self.modifiers.get().into());
-            app.window_event(&self.target, window_id, event);
+        let changed = self.with_window(window_id.into_raw() as xproto::Window, |window| {
+            std::mem::replace(&mut window.shared_state_lock().last_modifiers, modifiers)
+                != modifiers
+        });
+
+        match changed {
+            Some(changed) if changed || force => {
+                let event = WindowEvent::ModifiersChanged(modifiers.into());
+                app.window_event(&self.target, window_id, event);
+            },
+            _ => (),
         }
     }
 

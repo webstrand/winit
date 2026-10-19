@@ -16,6 +16,7 @@ use winit_core::error::{CreateWindowError, InvalidInput, NotSupportedError, Requ
 use winit_core::event::{SurfaceSizeWriter, WindowEvent};
 use winit_core::event_loop::AsyncRequestSerial;
 use winit_core::icon::RgbaIcon;
+use winit_core::keyboard::ModifiersState;
 use winit_core::monitor::{
     Fullscreen, MonitorHandle as CoreMonitorHandle, MonitorHandleProvider, VideoMode,
 };
@@ -380,6 +381,9 @@ pub struct SharedState {
     pub base_size: Option<Size>,
     pub visibility: Visibility,
     pub has_focus: bool,
+    /// Latest modifiers reported for this window, so that `ModifiersChanged` is only emitted on
+    /// change.
+    pub last_modifiers: ModifiersState,
     // Use `Option` to not apply hittest logic when it was never requested.
     pub cursor_hittest: Option<bool>,
 }
@@ -420,6 +424,7 @@ impl SharedState {
             surface_resize_increments: None,
             base_size: None,
             has_focus: false,
+            last_modifiers: ModifiersState::empty(),
             cursor_hittest: None,
         })
     }

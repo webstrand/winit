@@ -208,6 +208,20 @@ pub enum WindowEvent {
     },
 
     /// The keyboard modifiers have changed.
+    ///
+    /// The reported state remains valid until the next `ModifiersChanged` for the same window.
+    ///
+    /// The modifiers are reported to the window with keyboard focus and, where the platform
+    /// provides them for pointer input, to an unfocused window receiving that input. An application
+    /// handling modified pointer input, such as <kbd>Ctrl</kbd>+click, should therefore track the
+    /// latest value regardless of focus. A window which loses keyboard focus or stops receiving
+    /// pointer input is generally reset to no modifiers.
+    ///
+    /// ## Platform-specific
+    ///
+    /// - **X11:** The modifier state of a pointer event is reported to the window receiving the
+    ///   event, and modifier changes to the window under the pointer. An unfocused window is reset
+    ///   when the pointer leaves it with no button held, or when a button is released outside it.
     ModifiersChanged(Modifiers),
 
     /// An event from an input method.

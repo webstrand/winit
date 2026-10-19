@@ -57,3 +57,6 @@ changelog entry.
 - Removed the `url` dependency from `winit-core`, along with `SendData::from_file_paths`,
   `TypedData::try_as_file_paths` and `impl From<Vec<url::Url>> for SendData`. Use `SendData::Uris`
   / `TypedData::try_as_uris` with `file:` URIs instead.
+- On X11, `WindowEvent::ModifiersChanged` is also delivered to an unfocused window receiving pointer
+  input, from the modifier state of pointer events, so Ctrl+click and Ctrl+scroll into it carry
+  their modifiers.

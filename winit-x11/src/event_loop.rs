@@ -404,7 +404,7 @@ impl EventLoop {
             held_key_press: None,
             first_touch: None,
             active_window: None,
-            modifiers: Default::default(),
+            pointer_window: None,
             is_composing: false,
         };
 
