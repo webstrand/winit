@@ -222,6 +222,10 @@ pub enum WindowEvent {
     /// - **X11:** The modifier state of a pointer event is reported to the window receiving the
     ///   event, and modifier changes to the window under the pointer. An unfocused window is reset
     ///   when the pointer leaves it with no button held, or when a button is released outside it.
+    /// - **Wayland:** The modifiers are reported to the window under the pointer while another
+    ///   window of the application has keyboard focus, or when the compositor sends
+    ///   `wl_keyboard.modifiers` without keyboard focus. The window is reset when the pointer
+    ///   leaves it.
     ModifiersChanged(Modifiers),
 
     /// An event from an input method.

@@ -511,6 +511,10 @@ impl EventLoop {
                         // Remove updates for the destroyed window so the next iteration
                         // cannot process them against the state we just removed.
                         state.window_compositor_updates.retain(|update| update.window_id != w);
+
+                        for seat_state in state.seats.values() {
+                            seat_state.forget_window(w);
+                        }
                     });
                     app.window_event(&self.active_event_loop, w, WindowEvent::Destroyed);
                 }

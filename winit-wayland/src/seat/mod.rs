@@ -1,7 +1,7 @@
 //! Seat handling.
 
 use std::cell::Cell;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 
 use foldhash::HashMap;
 use sctk::data_device_manager::data_device::DataDevice;
@@ -20,7 +20,10 @@ use wayland_protocols::wp::tablet::zv2::client::zwp_tablet_seat_v2::ZwpTabletSea
 use winit_core::event::WindowEvent;
 use winit_core::keyboard::ModifiersState;
 
+use crate::WindowId;
+use crate::event_loop::sink::EventSink;
 use crate::state::WinitState;
+use crate::window::WindowState;
 
 mod keyboard;
 mod pointer;
@@ -75,8 +78,23 @@ pub struct WinitSeatState {
     /// The current modifiers state on the seat.
     modifiers: ModifiersState,
 
+    /// Whether `modifiers` reflects the latest `wl_keyboard.modifiers`.
+    ///
+    /// Cleared when the keyboard focus is lost, after which the compositor sends modifiers only if
+    /// it ties them to the pointer focus (wayland >= 1.23).
+    modifiers_known: bool,
+
+    /// Serial of the latest `wl_keyboard.modifiers`.
+    modifiers_serial: u32,
+
     /// Whether we have pending modifiers.
     modifiers_pending: bool,
+
+    /// Unfocused window which last received the modifiers for pointer input, reset once it stops
+    /// receiving pointer input.
+    ///
+    /// Written from the pointer handler, which only has a shared reference, thus `Cell`.
+    pointer_modifiers_window: Cell<Option<WindowId>>,
 
     /// Serial of the most recent input event (keyboard or pointer) on this seat.
     /// Written by both keyboard and pointer handlers through a shared reference,
@@ -101,6 +119,78 @@ impl WinitSeatState {
 
     pub(crate) fn pointer_data(&self) -> Option<&PointerData<WinitPointerData>> {
         self.pointer.as_ref().and_then(|pointer| pointer.pointer().data())
+    }
+
+    /// The window with keyboard focus on this seat.
+    fn keyboard_focus(&self) -> Option<WindowId> {
+        self.keyboard_state.as_ref()?.keyboard.data::<KeyboardData>()?.window_id()
+    }
+
+    /// Reports the modifiers to the window under the pointer if it lacks keyboard focus.
+    ///
+    /// Both the `wl_keyboard.modifiers` and the `wl_pointer.enter` handlers call this, since either
+    /// may arrive first: sctk delivers pointer events on `wl_pointer.frame`, but keyboard events
+    /// immediately. The latter passes the serial of the `wl_pointer.enter`.
+    pub(crate) fn send_pointer_modifiers(
+        &self,
+        windows: &HashMap<WindowId, Arc<Mutex<WindowState>>>,
+        events_sink: &mut EventSink,
+        enter_serial: Option<u32>,
+    ) {
+        if !self.modifiers_known {
+            return;
+        }
+
+        // Without keyboard focus, the compositor updates the modifiers only for the pointer focus,
+        // so modifiers from before the `wl_pointer.enter` are stale; the compositor sends current
+        // ones after it. Compositors draw both serials from a single counter, which orders them.
+        if let Some(enter_serial) = enter_serial {
+            let sent_after_enter = self.modifiers_serial.wrapping_sub(enter_serial) as i32 > 0;
+            if self.keyboard_focus().is_none() && !sent_after_enter {
+                return;
+            }
+        }
+
+        let window_id = match self
+            .pointer_data()
+            .and_then(|pointer| pointer.data().focused_window())
+            .filter(|window_id| Some(*window_id) != self.keyboard_focus())
+        {
+            Some(window_id) if windows.contains_key(&window_id) => window_id,
+            _ => return,
+        };
+
+        events_sink
+            .push_window_event(WindowEvent::ModifiersChanged(self.modifiers.into()), window_id);
+        self.pointer_modifiers_window.set(Some(window_id));
+    }
+
+    /// Resets the modifiers of the window which received them for pointer input, unless it has
+    /// gained keyboard focus, which then supplies them.
+    pub(crate) fn clear_pointer_modifiers(
+        &self,
+        windows: &HashMap<WindowId, Arc<Mutex<WindowState>>>,
+        events_sink: &mut EventSink,
+    ) {
+        let window_id = match self.pointer_modifiers_window.take() {
+            Some(window_id) if windows.contains_key(&window_id) => window_id,
+            _ => return,
+        };
+
+        if self.keyboard_focus() != Some(window_id) {
+            events_sink.push_window_event(
+                WindowEvent::ModifiersChanged(ModifiersState::empty().into()),
+                window_id,
+            );
+        }
+    }
+
+    /// Forgets a destroyed window which received the modifiers for pointer input, so that a new
+    /// window reusing its ID is not mistaken for it.
+    pub(crate) fn forget_window(&self, window_id: WindowId) {
+        if self.pointer_modifiers_window.get() == Some(window_id) {
+            self.pointer_modifiers_window.set(None);
+        }
     }
 }
 
@@ -238,6 +328,9 @@ impl SeatHandler for WinitState {
                 }
             },
             SeatCapability::Pointer => {
+                // Without a pointer, no window receives modifiers for pointer input.
+                seat_state.clear_pointer_modifiers(self.windows.get_mut(), &mut self.events_sink);
+
                 if let Some(relative_pointer) = seat_state.relative_pointer.take() {
                     relative_pointer.destroy();
                 }
@@ -269,6 +362,9 @@ impl SeatHandler for WinitState {
                 }
             },
             SeatCapability::Keyboard => {
+                // Without a keyboard, the modifiers are unknown.
+                seat_state.modifiers_known = false;
+                seat_state.clear_pointer_modifiers(self.windows.get_mut(), &mut self.events_sink);
                 seat_state.keyboard_state = None;
                 self.on_keyboard_destroy(&seat.id());
             },
@@ -295,6 +391,7 @@ impl SeatHandler for WinitState {
             if let Some(text_input) = seat_state.text_input.take() {
                 text_input.destroy();
             }
+            seat_state.clear_pointer_modifiers(self.windows.get_mut(), &mut self.events_sink);
         }
         self.on_keyboard_destroy(&seat.id());
     }

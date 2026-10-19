@@ -60,3 +60,6 @@ changelog entry.
 - On X11, `WindowEvent::ModifiersChanged` is also delivered to an unfocused window receiving pointer
   input, from the modifier state of pointer events, so Ctrl+click and Ctrl+scroll into it carry
   their modifiers.
+- On Wayland, `WindowEvent::ModifiersChanged` is also delivered to the unfocused window under the
+  pointer, while another window of the application has keyboard focus or when the compositor sends
+  `wl_keyboard.modifiers` without keyboard focus.

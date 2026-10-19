@@ -120,7 +120,7 @@ impl PointerHandler for WinitState {
                     );
                 },
                 // Regular events on the main surface.
-                PointerEventKind::Enter { .. } => {
+                PointerEventKind::Enter { serial } => {
                     self.events_sink.push_window_event(
                         WindowEvent::PointerEntered {
                             primary: true,
@@ -135,6 +135,16 @@ impl PointerHandler for WinitState {
 
                     // Set the currently focused surface.
                     pointer.winit_data().data().inner.lock().unwrap().surface = Some(window_id);
+
+                    // The modifiers for pointer input are reported here as well, in case
+                    // `wl_keyboard.modifiers` preceded this `wl_pointer.frame` (see
+                    // `WlKeyboardEvent::Modifiers`).
+                    drop(window);
+                    seat_state.send_pointer_modifiers(
+                        self.windows.get_mut(),
+                        &mut self.events_sink,
+                        Some(serial),
+                    );
                 },
                 PointerEventKind::Leave { .. } => {
                     window.pointer_left(Arc::downgrade(themed_pointer));
@@ -151,6 +161,12 @@ impl PointerHandler for WinitState {
                         },
                         window_id,
                     );
+
+                    // The window receives neither keyboard nor pointer input anymore, so its
+                    // modifiers are stale.
+                    drop(window);
+                    seat_state
+                        .clear_pointer_modifiers(self.windows.get_mut(), &mut self.events_sink);
                 },
                 PointerEventKind::Motion { .. } => {
                     self.events_sink.push_window_event(
