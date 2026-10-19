@@ -1,0 +1,21 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:06:51.662 TEST T9 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Release Ctrl, Wait a second, Move the pointer back over the probe window (don't click), Move the pointer off the probe window
+[11:06:51.744276 +93470.497ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:06:53.838615 +95564.836ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 2.0, y: 677.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:56.144207 +97870.427ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:06:57.045536 +98771.757ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -3.0, y: 687.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:57.888044 +99614.265ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:06:59.069318 +100795.540ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 4.0, y: 645.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:07:00.421848 +102148.070ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -4.0, y: 642.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:07:01.036182 +102762.403ms] device Button { button: 1, state: Pressed }
+[11:07:01.154303 +102880.524ms] device Button { button: 1, state: Released }
+[11:07:01.704154 +103430.375ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:07:01.705 TEST T9 END

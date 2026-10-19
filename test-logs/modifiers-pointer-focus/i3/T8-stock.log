@@ -1,0 +1,21 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:06:38.734 TEST T8 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Move the pointer back over the probe window, Release Ctrl, Move the pointer off the probe window
+[11:06:38.800065 +80526.285ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:06:41.139471 +82865.693ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 2.0, y: 628.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:41.807914 +83534.136ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:06:43.652213 +85378.435ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -3.0, y: 651.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:45.498572 +87224.794ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 5.0, y: 621.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:48.351839 +90078.061ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:06:49.327978 +91054.200ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -3.0, y: 622.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:49.728925 +91455.146ms] device Button { button: 1, state: Pressed }
+[11:06:49.857886 +91584.108ms] device Button { button: 1, state: Released }
+[11:06:50.792275 +92518.496ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:06:50.796 TEST T8 END

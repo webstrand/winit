@@ -1,0 +1,21 @@
+# environment: x11-kwin_x11
+# libwayland:  1.26.0
+# started:     2026-10-19T11:09:52-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  kwin6-x11 6.7.5
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110952-x11-kwin_x11-tip.log
+# 11:10:48.856 TEST T8 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Move the pointer back over the probe window, Release Ctrl, Move the pointer off the probe window
+[11:10:48.921506 +54841.689ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:10:54.835171 +60755.354ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 0.0, y: 236.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:10:57.441369 +63361.553ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:10:59.286394 +65206.578ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -3.0, y: 214.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:11:01.656441 +67576.625ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 1.0, y: 198.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:11:02.857746 +68777.930ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:11:03.983903 +69904.086ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -1.0, y: 223.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:11:04.332581 +70252.764ms] device Button { button: 1, state: Pressed }
+[11:11:04.473395 +70393.579ms] device Button { button: 1, state: Released }
+[11:11:05.081635 +71001.818ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:11:05.086 TEST T8 END

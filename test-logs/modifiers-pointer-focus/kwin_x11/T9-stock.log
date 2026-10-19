@@ -1,0 +1,21 @@
+# environment: x11-kwin_x11
+# libwayland:  1.26.0
+# started:     2026-10-19T11:09:52-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  kwin6-x11 6.7.5
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110952-x11-kwin_x11-tip.log
+# 11:11:06.247 TEST T9 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Release Ctrl, Wait a second, Move the pointer back over the probe window (don't click), Move the pointer off the probe window
+[11:11:06.305916 +72226.099ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:11:07.523454 +73443.638ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 0.0, y: 164.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:11:08.441494 +74361.678ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:11:09.603543 +75523.728ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -4.0, y: 242.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:11:10.761793 +76681.976ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:11:12.032493 +77952.677ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 2.0, y: 232.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:11:13.321560 +79241.744ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -1.0, y: 255.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:11:14.041863 +79962.047ms] device Button { button: 1, state: Pressed }
+[11:11:14.147944 +80068.128ms] device Button { button: 1, state: Released }
+[11:11:14.785847 +80706.031ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:11:14.789 TEST T9 END

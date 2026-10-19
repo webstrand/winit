@@ -1,0 +1,19 @@
+# environment: x11-openbox
+# libwayland:  1.26.0
+# started:     2026-10-19T11:07:36-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  openbox 3.6.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110736-x11-openbox-tip.log
+# 11:08:52.215 TEST T7 BEGIN: Keep the pointer over this xterm, Hold Ctrl, Move the pointer over the probe window (don't click), Wait a second, Release Ctrl, Move the pointer off the probe window
+[11:08:52.280716 +74719.276ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:08:54.409045 +76847.604ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:08:55.288315 +77726.875ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 1.0, y: 262.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:08:56.441078 +78879.638ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:08:57.241259 +79679.819ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -1.0, y: 273.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:08:57.668065 +80106.625ms] device Button { button: 1, state: Pressed }
+[11:08:57.786995 +80225.555ms] device Button { button: 1, state: Released }
+[11:08:58.368540 +80807.101ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:08:58.369 TEST T7 END

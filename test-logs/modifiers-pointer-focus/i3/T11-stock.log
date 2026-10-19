@@ -1,0 +1,33 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:07:16.617 TEST T11 BEGIN: Hold Ctrl, Press the mouse button in the probe window and keep it held, Drag the pointer onto this xterm, Release the mouse there, Wait a second, Release Ctrl
+[11:07:16.703905 +118430.127ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:07:22.504540 +124230.761ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:07:23.895616 +125621.838ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 3.0, y: 684.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x40000c)
+[11:07:26.011464 +127737.685ms] device Button { button: 1, state: Pressed }
+[11:07:26.012194 +127738.415ms] PointerButton { device_id: Some(DeviceId(2)), state: Pressed, position: PhysicalPosition { x: 355.70166015625, y: 656.6168212890625 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL|BUTTON1 focus=other(0x40000c)
+[11:07:26.014334 +127740.555ms] Focused(true) | x11 mask=CONTROL|BUTTON1 focus=self
+[11:07:26.014598 +127740.820ms] KeyboardInput { device_id: None, event: KeyEvent { physical_key: Code(ControlLeft), logical_key: Named(Control), text: None, location: Left, state: Pressed, repeat: false, text_with_all_modifiers: None, key_without_modifiers: Named(Control) }, is_synthetic: true }
+[11:07:26.015122 +127741.344ms] ModifiersChanged(Modifiers { state: ModifiersState(CONTROL), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=CONTROL|BUTTON1 focus=self
+[11:07:27.222861 +128949.083ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -2.0, y: 709.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL|BUTTON1 focus=self
+[11:07:28.761491 +130487.712ms] device Button { button: 1, state: Released }
+[11:07:28.762504 +130488.726ms] PointerButton { device_id: Some(DeviceId(2)), state: Released, position: PhysicalPosition { x: -823.60595703125, y: 784.7614135742188 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL focus=self
+[11:07:28.763017 +130489.239ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -824.0, y: 784.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=self
+[11:07:28.763442 +130489.664ms] ModifiersChanged(Modifiers { state: ModifiersState(CONTROL), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=CONTROL focus=self
+[11:07:29.880550 +131606.771ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:07:29.880667 +131606.889ms] KeyboardInput { device_id: None, event: KeyEvent { physical_key: Code(ControlLeft), logical_key: Named(Control), text: None, location: Left, state: Released, repeat: false, text_with_all_modifiers: None, key_without_modifiers: Named(Control) }, is_synthetic: false }
+[11:07:29.881122 +131607.344ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=0 focus=self
+[11:07:30.640293 +132366.513ms] device Button { button: 1, state: Pressed }
+[11:07:30.640829 +132367.050ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=BUTTON1 focus=self
+[11:07:30.643045 +132369.267ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=BUTTON1 focus=other(0x40000c)
+[11:07:30.643692 +132369.914ms] Focused(false) | x11 mask=BUTTON1 focus=other(0x40000c)
+[11:07:30.741428 +132467.649ms] device Button { button: 1, state: Released }
+[11:07:31.960273 +133686.494ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:07:31.964 TEST T11 END

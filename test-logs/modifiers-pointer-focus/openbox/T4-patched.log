@@ -1,0 +1,21 @@
+# environment: x11-openbox
+# libwayland:  1.26.0
+# started:     2026-10-19T11:33:36-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip-fable (winit master + winit-fable patch, dpi_v0.1.2-227-gf20661474)
+# compositor:  openbox 3.6.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-113336-x11-openbox-tipfable.log
+# 11:34:02.706 TEST T4 BEGIN: Move the pointer over the probe window (don't click), Keep the pointer still until the last step, Hold Ctrl for a second, Release Ctrl, Wait a second, Move the pointer off the probe window
+[11:34:02.772022 +25797.992ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:34:04.202525 +27228.496ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 5.0, y: 239.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:34:04.908104 +27934.074ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:34:04.908524 +27934.495ms] ModifiersChanged(Modifiers { state: ModifiersState(CONTROL), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=CONTROL focus=other(0x30000c)
+[11:34:05.803798 +28829.768ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:34:05.804277 +28830.248ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=0 focus=other(0x30000c)
+[11:34:06.411073 +29437.043ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -2.0, y: 254.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:34:06.653979 +29679.949ms] device Button { button: 1, state: Pressed }
+[11:34:06.768730 +29794.699ms] device Button { button: 1, state: Released }
+[11:34:07.299790 +30325.760ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:34:07.304 TEST T4 END

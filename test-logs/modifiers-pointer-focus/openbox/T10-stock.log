@@ -1,0 +1,23 @@
+# environment: x11-openbox
+# libwayland:  1.26.0
+# started:     2026-10-19T11:07:36-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  openbox 3.6.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110736-x11-openbox-tip.log
+# 11:09:26.143 TEST T10 BEGIN: Hold Ctrl, Click the probe window once (no drag), Click this xterm, Release Ctrl
+[11:09:26.216998 +108655.559ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:09:31.121176 +113559.736ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:09:31.635856 +114074.416ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 3.0, y: 174.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:32.358990 +114797.550ms] device Button { button: 1, state: Pressed }
+[11:09:32.359484 +114798.045ms] PointerButton { device_id: Some(DeviceId(2)), state: Pressed, position: PhysicalPosition { x: 419.40478515625, y: 166.3992919921875 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL|BUTTON1 focus=other(0x30000c)
+[11:09:32.465999 +114904.559ms] device Button { button: 1, state: Released }
+[11:09:32.466490 +114905.050ms] PointerButton { device_id: Some(DeviceId(2)), state: Released, position: PhysicalPosition { x: 419.40478515625, y: 166.3992919921875 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:33.685327 +116123.887ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -4.0, y: 216.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:33.955982 +116394.543ms] device Button { button: 1, state: Pressed }
+[11:09:34.062050 +116500.610ms] device Button { button: 1, state: Released }
+[11:09:34.905313 +117343.873ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:09:35.545055 +117983.615ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:09:35.549 TEST T10 END

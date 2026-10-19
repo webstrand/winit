@@ -1,0 +1,21 @@
+# environment: x11-openbox
+# libwayland:  1.26.0
+# started:     2026-10-19T11:07:36-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  openbox 3.6.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110736-x11-openbox-tip.log
+# 11:09:10.968 TEST T9 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Release Ctrl, Wait a second, Move the pointer back over the probe window (don't click), Move the pointer off the probe window
+[11:09:11.008875 +93447.436ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:09:17.811876 +100250.436ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 2.0, y: 250.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:09:19.185001 +101623.561ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:09:20.151256 +102589.817ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -4.0, y: 280.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:21.377012 +103815.572ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:09:22.668109 +105106.670ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 0.0, y: 260.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:09:24.094546 +106533.106ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -1.0, y: 248.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:09:24.551972 +106990.532ms] device Button { button: 1, state: Pressed }
+[11:09:24.682063 +107120.623ms] device Button { button: 1, state: Released }
+[11:09:25.329006 +107767.566ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:09:25.333 TEST T9 END

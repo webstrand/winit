@@ -1,0 +1,32 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:05:35.805 TEST T2 BEGIN: Hold Ctrl, Click in the probe window and drag, Release the mouse, Release Ctrl
+[11:05:35.887779 +17614.000ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:05:38.879887 +20606.108ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:05:39.178169 +20904.390ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 5.0, y: 357.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x40000c)
+[11:05:39.972749 +21698.970ms] device Button { button: 1, state: Pressed }
+[11:05:39.973435 +21699.656ms] PointerButton { device_id: Some(DeviceId(2)), state: Pressed, position: PhysicalPosition { x: 438.97412109375, y: 351.0150146484375 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL|BUTTON1 focus=other(0x40000c)
+[11:05:39.975630 +21701.852ms] Focused(true) | x11 mask=CONTROL|BUTTON1 focus=self
+[11:05:39.975991 +21702.213ms] KeyboardInput { device_id: None, event: KeyEvent { physical_key: Code(ControlLeft), logical_key: Named(Control), text: None, location: Left, state: Pressed, repeat: false, text_with_all_modifiers: None, key_without_modifiers: Named(Control) }, is_synthetic: true }
+[11:05:39.976233 +21702.455ms] ModifiersChanged(Modifiers { state: ModifiersState(CONTROL), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=CONTROL|BUTTON1 focus=self
+[11:05:40.696646 +22422.867ms] device Button { button: 1, state: Released }
+[11:05:40.697137 +22423.358ms] PointerButton { device_id: Some(DeviceId(2)), state: Released, position: PhysicalPosition { x: 854.04541015625, y: 927.850830078125 }, primary: true, button: Mouse(Left), is_macos_activation_click: false } | x11 mask=CONTROL focus=self
+[11:05:40.697535 +22423.757ms] ModifiersChanged(Modifiers { state: ModifiersState(CONTROL), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=CONTROL focus=self
+[11:05:41.231834 +22958.055ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:05:41.231915 +22958.137ms] KeyboardInput { device_id: None, event: KeyEvent { physical_key: Code(ControlLeft), logical_key: Named(Control), text: None, location: Left, state: Released, repeat: false, text_with_all_modifiers: None, key_without_modifiers: Named(Control) }, is_synthetic: false }
+[11:05:41.232345 +22958.567ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=0 focus=self
+[11:05:41.642738 +23368.959ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -12.0, y: 648.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=self
+[11:05:42.101788 +23828.009ms] device Button { button: 1, state: Pressed }
+[11:05:42.102337 +23828.559ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=BUTTON1 focus=self
+[11:05:42.104462 +23830.684ms] ModifiersChanged(Modifiers { state: ModifiersState(0x0), pressed_mods: ModifiersKeys(0x0) }) | x11 mask=BUTTON1 focus=other(0x40000c)
+[11:05:42.105132 +23831.354ms] Focused(false) | x11 mask=BUTTON1 focus=other(0x40000c)
+[11:05:42.197647 +23923.868ms] device Button { button: 1, state: Released }
+[11:05:42.807584 +24533.806ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:05:42.808 TEST T2 END

@@ -1,0 +1,23 @@
+# environment: x11-openbox
+# libwayland:  1.26.0
+# started:     2026-10-19T11:07:36-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  openbox 3.6.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110736-x11-openbox-tip.log
+# 11:08:59.163 TEST T8 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Move the pointer onto this xterm, Move the pointer back over the probe window, Release Ctrl, Move the pointer off the probe window
+[11:08:59.217088 +81655.648ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:09:01.102986 +83541.546ms] device Button { button: 1, state: Pressed }
+[11:09:01.198460 +83637.021ms] device Button { button: 1, state: Released }
+[11:09:04.160399 +86598.959ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 0.0, y: 242.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:09:05.392993 +87831.553ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:09:06.493148 +88931.709ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -2.0, y: 243.0 }), primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:07.581426 +90019.986ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 2.0, y: 212.0 }, primary: true, kind: Mouse } | x11 mask=CONTROL focus=other(0x30000c)
+[11:09:08.544806 +90983.366ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:09:09.293569 +91732.129ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -1.0, y: 208.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:09:09.599107 +92037.667ms] device Button { button: 1, state: Pressed }
+[11:09:09.732844 +92171.404ms] device Button { button: 1, state: Released }
+[11:09:10.345145 +92783.705ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:09:10.349 TEST T8 END

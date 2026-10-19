@@ -1,0 +1,21 @@
+# environment: x11-kwin_x11
+# libwayland:  1.26.0
+# started:     2026-10-19T11:09:52-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  kwin6-x11 6.7.5
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110952-x11-kwin_x11-tip.log
+# 11:10:26.263 TEST T5 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Scroll a few notches, Release Ctrl, Move the pointer off the probe window
+[11:10:26.321389 +32241.572ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:10:27.755244 +33675.428ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 1.0, y: 218.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:10:28.305711 +34225.894ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:10:29.409269 +35329.453ms] MouseWheel { device_id: Some(DeviceId(2)), delta: LineDelta(0.0, -1.0), phase: Moved } | x11 mask=CONTROL focus=other(0x30000c)
+[11:10:29.812707 +35732.890ms] MouseWheel { device_id: Some(DeviceId(2)), delta: LineDelta(0.0, -1.0), phase: Moved } | x11 mask=CONTROL focus=other(0x30000c)
+[11:10:30.377154 +36297.338ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:10:31.172575 +37092.759ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -2.0, y: 224.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x30000c)
+[11:10:31.747164 +37667.348ms] device Button { button: 1, state: Pressed }
+[11:10:31.852624 +37772.808ms] device Button { button: 1, state: Released }
+[11:10:32.441474 +38361.657ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:10:32.443 TEST T5 END

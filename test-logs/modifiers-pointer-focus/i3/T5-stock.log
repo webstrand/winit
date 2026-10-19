@@ -1,0 +1,22 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:06:09.931 TEST T5 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Scroll a few notches, Release Ctrl, Move the pointer off the probe window
+[11:06:09.999806 +51726.028ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:06:12.676655 +54402.876ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 0.0, y: 636.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:13.776078 +55502.299ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:06:14.697972 +56424.194ms] MouseWheel { device_id: Some(DeviceId(2)), delta: LineDelta(0.0, 1.0), phase: Moved } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:15.150922 +56877.144ms] MouseWheel { device_id: Some(DeviceId(2)), delta: LineDelta(0.0, -1.0), phase: Moved } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:16.096024 +57822.246ms] MouseWheel { device_id: Some(DeviceId(2)), delta: LineDelta(0.0, -1.0), phase: Moved } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:16.855802 +58582.023ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:06:17.489864 +59216.086ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -5.0, y: 646.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:18.676804 +60403.026ms] device Button { button: 1, state: Pressed }
+[11:06:18.800989 +60527.210ms] device Button { button: 1, state: Released }
+[11:06:20.384052 +62110.273ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:06:20.388 TEST T5 END

@@ -1,0 +1,23 @@
+# environment: x11-i3
+# libwayland:  1.26.0
+# started:     2026-10-19T11:05:17-04:00
+# kernel:      7.2.8-1-default
+# nvidia:      NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.178.04  Release Build  (abuild@OBS)  Mon Jul 27 11:36:32 UTC 2026
+# client:      winit-probe-tip (winit master dpi_v0.1.2-226-g758a50e35, stock)
+# compositor:  i3 4.25.1
+# tests:       T1-T11 (2026-10-19)
+# source:      20261019-110517-x11-i3-tip.log
+# 11:06:21.462 TEST T6 BEGIN: Move the pointer over the probe window (don't click), Hold Ctrl, Press the mouse Back button, Release Ctrl, Move the pointer off the probe window
+[11:06:21.552094 +63278.315ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Released })
+[11:06:23.263956 +64990.178ms] PointerEntered { device_id: Some(DeviceId(2)), position: PhysicalPosition { x: 4.0, y: 554.0 }, primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:23.975860 +65702.080ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Pressed })
+[11:06:24.878752 +66604.973ms] device Button { button: 8, state: Pressed }
+[11:06:24.879243 +66605.465ms] PointerButton { device_id: Some(DeviceId(2)), state: Pressed, position: PhysicalPosition { x: 569.466796875, y: 541.6304321289063 }, primary: true, button: Mouse(Back), is_macos_activation_click: false } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:25.046017 +66772.237ms] device Button { button: 8, state: Released }
+[11:06:25.046513 +66772.734ms] PointerButton { device_id: Some(DeviceId(2)), state: Released, position: PhysicalPosition { x: 569.466796875, y: 541.6304321289063 }, primary: true, button: Mouse(Back), is_macos_activation_click: false } | x11 mask=CONTROL focus=other(0x40000c)
+[11:06:25.991881 +67718.102ms] device Key(RawKeyEvent { physical_key: Code(ControlLeft), state: Released })
+[11:06:26.599040 +68325.261ms] PointerLeft { device_id: Some(DeviceId(2)), position: Some(PhysicalPosition { x: -2.0, y: 560.0 }), primary: true, kind: Mouse } | x11 mask=0 focus=other(0x40000c)
+[11:06:27.115780 +68842.001ms] device Button { button: 1, state: Pressed }
+[11:06:27.248788 +68975.009ms] device Button { button: 1, state: Released }
+[11:06:27.975983 +69702.204ms] device Key(RawKeyEvent { physical_key: Code(Enter), state: Pressed })
+# 11:06:27.980 TEST T6 END
